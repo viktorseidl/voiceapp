@@ -1,4 +1,5 @@
 import { styles } from "@/constants/Colors";
+import { useLogin } from "@/hooks/LoginProvider";
 import { Entypo, FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
@@ -11,6 +12,7 @@ import {
 } from "react-native";
 
 export default function Home() {
+  const { isAuthenticated } = useLogin();
   const { width, height } = Dimensions.get("window");
   const colorScheme = Appearance.getColorScheme();
   const themeTextStyle =
@@ -68,27 +70,49 @@ export default function Home() {
             Dokumentation
           </Text>
         </Pressable>
-
-        <Pressable
-          onPress={() => router.push({ pathname: "/(modals)/login" })}
-          style={{
-            padding: 20,
-            backgroundColor: "#2bdce3",
-            marginTop: 20,
-            borderRadius: 5,
-            flex: 0,
-            flexDirection: "row",
-          }}
-        >
-          <Entypo
-            name="login"
-            color={themeTextStyle.color}
-            size={themeTextStyle.size}
-          />
-          <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
-            Anmelden
-          </Text>
-        </Pressable>
+        {isAuthenticated ? (
+          <Pressable
+            onPress={() => router.push({ pathname: "/(modals)/login" })}
+            style={{
+              padding: 20,
+              backgroundColor: "#2bdce3",
+              marginTop: 20,
+              borderRadius: 5,
+              flex: 0,
+              flexDirection: "row",
+            }}
+          >
+            <Entypo
+              name="login"
+              color={themeTextStyle.color}
+              size={themeTextStyle.size}
+            />
+            <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
+              Abmelden
+            </Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => router.push({ pathname: "/(modals)/login" })}
+            style={{
+              padding: 20,
+              backgroundColor: "#2bdce3",
+              marginTop: 20,
+              borderRadius: 5,
+              flex: 0,
+              flexDirection: "row",
+            }}
+          >
+            <Entypo
+              name="login"
+              color={themeTextStyle.color}
+              size={themeTextStyle.size}
+            />
+            <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
+              Anmelden
+            </Text>
+          </Pressable>
+        )}
       </View>
     </View>
   );

@@ -3,9 +3,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ImageBackground } from "expo-image";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Dimensions, Pressable, Text, View } from "react-native";
+import { Dimensions, Image, Pressable, Text, View } from "react-native";
 import ValidatedInput from "../ui/ValidatedInput";
 import LogImage from "./../../assets/images/loginscreen.png";
+import MedHeaderImage from "./../../assets/images/medheader.png";
 export default function Login() {
   const { width, height } = Dimensions.get("window");
   const [uname, setUname] = useState("");
@@ -48,6 +49,17 @@ export default function Login() {
             width: "90%",
           }}
         >
+          <Image
+            style={{
+              position: "absolute",
+              bottom: 95,
+              left: "15%",
+              width: "70%",
+              opacity: 0.5,
+            }}
+            resizeMode="contain"
+            source={MedHeaderImage}
+          ></Image>
           <View
             style={{
               width: "100%",
