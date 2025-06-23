@@ -9,7 +9,7 @@ export const useLogin = () => useContext(TransactionContext);
 // Provider component
 export const LoginProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Logged-in user object
-  const [token, setToken] = useState(null); // JWT or auth token
+  const [token, setToken] = useState(true); // JWT or auth token
   const [loading, setLoading] = useState(true); // Login loading state
   const [error, setError] = useState(null); // Error message
 
@@ -30,7 +30,7 @@ export const LoginProvider = ({ children }) => {
         },
       };
       setToken(fakeResponse.token);
-      setUser(fakeResponse.user);
+      setUser(JSON.stringify(fakeResponse.user));
     } catch (err) {
       setError("Login failed. Please try again.");
     } finally {

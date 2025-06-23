@@ -1,5 +1,14 @@
 import { styles } from "@/constants/Colors";
-import { Appearance, Dimensions, Text, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import {
+  Appearance,
+  Dimensions,
+  ImageBackground,
+  Text,
+  View,
+} from "react-native";
+import ValidatedInput from "../ui/ValidatedInput";
+import Feedheader from "./../../assets/images/feedheader.png";
 import FlatLister from "./flatList";
 
 export default function Posts() {
@@ -14,66 +23,124 @@ export default function Posts() {
   return (
     <View
       style={[
-        themeContainerStyle,
         {
-          width: width,
           flex: 1,
+          width: width,
           flexDirection: "column",
-          alignContent: "flex-start",
+          justifyContent: "flex-start",
           alignItems: "center",
         },
+        themeContainerStyle,
       ]}
     >
-      <Text
-        style={[
-          {
-            color: "#ccc",
-            paddingVertical: 30,
-            paddingLeft: 30,
-            width: width,
-            textAlign: "left",
-            fontSize: 24,
-          },
-        ]}
-      >
-        Documentation auswählen
-      </Text>
       <View
         style={{
-          flex: 0,
-          flexDirection: "row",
-          alignContent: "center",
+          flex: 1,
+          width: "90%",
+          flexDirection: "column",
+          justifyContent: "flex-start",
           alignItems: "center",
         }}
       >
-        <FlatLister
-          data={[
-            "Blutdruck",
-            "Blutzucker",
-            "Pulse",
-            "Blutdruck",
-            "Kardio",
-            "Blutzucker",
-            "Blutdruck",
-            "Kardio",
-            "Blutzucker",
-            "Pulse",
-            22,
-            "Kardio",
-            41,
-            25,
-            77,
-            95,
-            144,
-            442,
-            443,
-            444,
-          ]}
-        />
+        <ImageBackground
+          style={{
+            position: "absolute",
+            top: "0%",
+            width: "100%",
+            height: "95%",
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+          source={Feedheader}
+        ></ImageBackground>
+        <View
+          style={{
+            width: "100%",
+            flex: 0,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingLeft: 15,
+            borderBottomWidth: 3,
+            borderBottomColor: "#FFFFFF77",
+          }}
+        >
+          <View
+            style={{
+              width: "auto",
+              flex: 0,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: 15,
+            }}
+          >
+            <MaterialIcons name="edit-document" color={"#FFF"} size={34} />
+            <Text style={{ fontSize: 30, color: "#FFF", fontWeight: 600 }}>
+              Dokumentationen
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "50%",
+              paddingTop: 12,
+              flex: 0,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View
+              style={{
+                width: "100%",
+                flex: 0,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <ValidatedInput
+                label=""
+                value={""}
+                onChangeText={""}
+                placeholder="Suche nach ..."
+                keyboardType="default"
+                required
+                validator={""}
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            width: "100%",
+            paddingTop: 8,
+            flex: 0,
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            gap: 18,
+          }}
+        >
+          <FlatLister
+            data={[
+              "Blutdruck",
+              "Blutzucker",
+              "Blutabnahme",
+              "Essverhalten",
+              "Kardio",
+              "Wundkontrolle",
+              "Pulse",
+              "Mobilität",
+              "Schlafverhalten",
+              "Hauptbeobachtung",
+              "Essverhalten",
+              "Temperaturmessung",
+            ]}
+          />
+        </View>
       </View>
-      {/*[1, 2, 3].map((id) => ({
-        
-      }))*/}
     </View>
   );
 }

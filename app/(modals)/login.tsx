@@ -1,4 +1,5 @@
 import { styles } from "@/constants/Colors";
+import { useLogin } from "@/hooks/LoginProvider";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ImageBackground } from "expo-image";
 import { router } from "expo-router";
@@ -8,6 +9,7 @@ import ValidatedInput from "../ui/ValidatedInput";
 import LogImage from "./../../assets/images/loginscreen.png";
 import MedHeaderImage from "./../../assets/images/medheader.png";
 export default function Login() {
+  const { login } = useLogin();
   const { width, height } = Dimensions.get("window");
   const [uname, setUname] = useState("");
   const [password, setPassword] = useState("");
@@ -155,7 +157,10 @@ export default function Login() {
                       </Text>
                     </Pressable>
                     <Pressable
-                      onPress={() => router.push({ pathname: "/profile" })}
+                      onPress={() => {
+                        login();
+                        router.push({ pathname: "/home" });
+                      }}
                       style={{
                         paddingHorizontal: 20,
                         paddingVertical: 10,

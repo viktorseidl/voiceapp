@@ -1,18 +1,20 @@
 import { styles } from "@/constants/Colors";
 import { useLogin } from "@/hooks/LoginProvider";
-import { Entypo, FontAwesome6 } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   Appearance,
   Dimensions,
+  Image,
   ImageBackground,
   Pressable,
   Text,
   View,
 } from "react-native";
-
+import MedHeaderImage from "./../../assets/images/homefooterback.png";
+import Logo from "./../../assets/images/Logo.png";
 export default function Home() {
-  const { isAuthenticated } = useLogin();
+  const { isAuthenticated, logout } = useLogin();
   const { width, height } = Dimensions.get("window");
   const colorScheme = Appearance.getColorScheme();
   const themeTextStyle =
@@ -37,6 +39,7 @@ export default function Home() {
             backgroundColor: "#143852",
             width: width * 0.9,
             aspectRatio: 1,
+            opacity: 0.9,
           }}
           source={require("./../../assets/images/splashbg.png")}
           resizeMode="contain"
@@ -47,72 +50,131 @@ export default function Home() {
           width: "100%",
           flex: 1,
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           flexDirection: "column",
         }}
       >
-        <Pressable
-          onPress={() => router.push({ pathname: "/posts" })}
+        <View
           style={{
-            padding: 20,
-            backgroundColor: "#1ae8aa",
-            borderRadius: 5,
+            width: "100%",
             flex: 0,
-            flexDirection: "row",
+            zIndex: 1,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "column",
           }}
         >
-          <FontAwesome6
-            name="user-doctor"
-            color={themeTextStyle.color}
-            size={themeTextStyle.size}
-          />
-          <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
-            Dokumentation
-          </Text>
-        </Pressable>
-        {isAuthenticated ? (
           <Pressable
-            onPress={() => router.push({ pathname: "/(modals)/login" })}
+            onPress={() => router.push({ pathname: "/posts" })}
             style={{
               padding: 20,
-              backgroundColor: "#2bdce3",
+              width: "40%",
+              backgroundColor: "#1ae8aa",
               marginTop: 20,
-              borderRadius: 5,
+              borderRadius: 3,
+              zIndex: 1,
               flex: 0,
               flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Entypo
-              name="login"
+            <FontAwesome6
+              name="user-doctor"
               color={themeTextStyle.color}
               size={themeTextStyle.size}
             />
             <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
-              Abmelden
+              Dokumentation
             </Text>
           </Pressable>
-        ) : (
-          <Pressable
-            onPress={() => router.push({ pathname: "/(modals)/login" })}
+          {isAuthenticated ? (
+            <Pressable
+              onPress={() => logout()}
+              style={{
+                padding: 20,
+                width: "40%",
+                backgroundColor: "#2bdce3",
+                marginTop: 20,
+                borderRadius: 3,
+                zIndex: 1,
+                flex: 0,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Feather
+                name="log-out"
+                color={themeTextStyle.color}
+                size={themeTextStyle.size}
+              />
+              <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
+                Abmelden
+              </Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => router.push({ pathname: "/(modals)/login" })}
+              style={{
+                padding: 20,
+                width: "40%",
+                backgroundColor: "#2bdce3",
+                marginTop: 20,
+                borderRadius: 3,
+                zIndex: 1,
+                flex: 0,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Entypo
+                name="login"
+                color={themeTextStyle.color}
+                size={themeTextStyle.size}
+              />
+              <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
+                Anmelden
+              </Text>
+            </Pressable>
+          )}
+          <View
             style={{
-              padding: 20,
-              backgroundColor: "#2bdce3",
-              marginTop: 20,
-              borderRadius: 5,
+              width: "100%",
               flex: 0,
+              zIndex: 1,
+              alignItems: "center",
+              justifyContent: "center",
               flexDirection: "row",
+              gap: 15,
+              marginTop: 140,
             }}
           >
-            <Entypo
-              name="login"
-              color={themeTextStyle.color}
-              size={themeTextStyle.size}
-            />
-            <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
-              Anmelden
+            <Image
+              style={{
+                width: "10%",
+              }}
+              resizeMode="contain"
+              source={Logo}
+            ></Image>
+            <Text style={{ fontSize: 18, color: "#89bcc8" }}>
+              Version: 1.0.0
             </Text>
-          </Pressable>
-        )}
+          </View>
+        </View>
+        <Image
+          style={{
+            position: "absolute",
+            zIndex: 0,
+            bottom: 0,
+            left: "5%",
+            width: "90%",
+            opacity: 0.5,
+          }}
+          resizeMode="cover"
+          source={MedHeaderImage}
+        ></Image>
       </View>
     </View>
   );

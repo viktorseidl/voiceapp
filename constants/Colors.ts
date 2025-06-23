@@ -36,6 +36,24 @@ export const styles = StyleSheet.create({
   darkThemeText: {
     color: "#d0d0c0",
   },
+  ThemeTitleText: {
+    color: "#ffffff",
+  },
+  ThemeSubtitleText: {
+    color: "#2bdce3",
+  },
+  ThemeDescriptionText: {
+    color: "#a6f4de",
+  },
+  ThemeDateTimeText: {
+    color: "#89bcc8",
+  },
+  ThemeUserNameText: {
+    color: "#b8f6f2",
+  },
+  ThemeIconsDocumentation: {
+    color: "#6c88a1",
+  },
   loginParentView: {
     flex: 1,
     justifyContent: "center",
