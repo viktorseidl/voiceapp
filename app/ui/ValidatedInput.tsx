@@ -1,28 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-
-const ValidatedInput = ({
+import {
+  KeyboardTypeOptions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  View,
+} from "react-native";
+type ValidatedInputProps = {
+  label?: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  validator?: (text: string) => string | null;
+  onBlur?: () => void;
+  error?: string; // external error message
+} & Partial<TextInputProps>;
+const ValidatedInput: React.FC<ValidatedInputProps> = ({
   label,
   value,
-  onChange,
+  onChangeText,
   placeholder,
   keyboardType = "default",
   secureTextEntry = false,
   required = false,
   minLength,
   maxLength,
-  validator, // Optional custom validator function
+  validator,
   onBlur,
-  error: externalError, // Optional external error override
+  error: externalError,
+  ...textInputProps
 }) => {
   const [touched, setTouched] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (touched) validate(value);
   }, [value]);
 
-  const validate = (text) => {
+  const validate = (text: string) => {
     if (required && !text) {
       setError("Bitte geben Sie Ihre Daten ein.");
     } else if (minLength && text.length < minLength) {
@@ -49,7 +70,7 @@ const ValidatedInput = ({
       <TextInput
         style={[styles.input, (error || externalError) && styles.inputError]}
         value={value}
-        onChangeText={onChange}
+        onChangeText={onChangeText}
         placeholder={placeholder}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
@@ -72,13 +93,14 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 6,
     fontWeight: "600",
+    fontSize: 18,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 12,
-    backgroundColor: "#c2ddf0",
+    backgroundColor: "#ebeef0",
     fontSize: 16,
   },
   inputError: {
@@ -87,5 +109,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "#ff4d4d",
     marginTop: 4,
+    fontSize: 16,
   },
 });
