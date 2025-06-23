@@ -1,45 +1,78 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useLogin } from "@/hooks/LoginProvider";
+import { Entypo, Ionicons } from "@expo/vector-icons";
+import { router, Tabs } from "expo-router";
+import { useEffect } from "react";
+import { Appearance } from "react-native";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+  const { isAuthenticated } = useLogin();
+  const colorScheme = Appearance.getColorScheme();
+  const themeContainerStyle = {
+    backgroundColor: colorScheme === "light" ? "#082438" : "#082438",
+  };
+  const themeTextColors = {
+    active: colorScheme === "light" ? "#71f0d2" : "#71f0d2",
+    inactive: colorScheme === "light" ? "#71c5f0" : "#71c5f0",
+  };
+  useEffect(() => {}, [isAuthenticated]);
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarStyle: themeContainerStyle,
+        tabBarActiveTintColor: themeTextColors.active,
+        tabBarInactiveTintColor: themeTextColors.inactive,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Start",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" color={color} size={24} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="feed"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          headerShown: false,
+          title: "Verlauf",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="list" color={color} size={24} />
+          ),
         }}
       />
+      {!isAuthenticated ? (
+        <Tabs.Screen
+          name="profile"
+          options={{
+            headerShown: false,
+            title: "Anmelden",
+            tabBarIcon: ({ color }) => (
+              <Entypo name="login" color={color} size={24} />
+            ),
+          }}
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+              router.push("/(modals)/login");
+            },
+          }}
+        />
+      ) : (
+        <Tabs.Screen
+          name="profile"
+          options={{
+            headerShown: false,
+            title: "Profile",
+            tabBarIcon: ({ color }) => (
+              <Entypo name="user" color={color} size={24} />
+            ),
+          }}
+        />
+      )}
     </Tabs>
   );
 }

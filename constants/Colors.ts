@@ -1,26 +1,45 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+import { StyleSheet } from "react-native";
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+  text: {
+    fontSize: 20,
   },
-};
+  lightStandardText: {
+    fontSize: 19,
+    fontFamily: "Arial",
+    color: "#04121c",
+  },
+  darkStandardText: {
+    fontSize: 19,
+    fontFamily: "Arial",
+    color: "#788994",
+  },
+  lightContainer: {
+    backgroundColor: "#143852", //"#faf6f0",
+  },
+  darkContainer: {
+    backgroundColor: "#04121c",
+  },
+  lightTabContainer: {
+    backgroundColor: "#faf6f0",
+  },
+  darkTabContainer: {
+    backgroundColor: "#04121c",
+  },
+  lightThemeText: {
+    color: "#242c40",
+  },
+  darkThemeText: {
+    color: "#d0d0c0",
+  },
+  loginParentView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1a496b",
+  },
+});
