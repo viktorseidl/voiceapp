@@ -147,7 +147,7 @@ export default function FlatLister({ data }) {
             style={{
               fontSize: 14,
               fontWeight: 600,
-              color: "#6c88a1",
+              color: "#343434",
             }}
           >
             {item}

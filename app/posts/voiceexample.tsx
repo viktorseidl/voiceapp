@@ -1,15 +1,6 @@
 import { styles } from "@/constants/Colors";
-import * as Speech from "@jamsch/expo-speech-recognition";
 import { useCallback, useEffect, useState } from "react";
-import {
-  Alert,
-  Appearance,
-  Button,
-  PermissionsAndroid,
-  Platform,
-  Text,
-  View,
-} from "react-native";
+import { Appearance, Button, Text, View } from "react-native";
 export default function Profile() {
   const colorScheme = Appearance.getColorScheme();
   const themeTextStyle =
@@ -25,15 +16,16 @@ export default function Profile() {
     setTranscript((prev) => (prev !== text ? text : prev));
   }, []);
   useEffect(() => {
+    let onResultSubscription: any;
+    let onErrorSubscription: any;
     const requestMicrophonePermission = async () => {
-      try {
+      /* try {
         if (Platform.OS === "android") {
-          console.log("isandroid");
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
             {
-              title: "Microphone Permission",
-              message: "App needs access to your microphone",
+              title: "Mikrofon Zugriffsrecht",
+              message: "Die App benötigt Zugriff auf Ihr Mikrofon",
               buttonPositive: "OK",
             }
           );
@@ -47,18 +39,25 @@ export default function Profile() {
       } catch (err) {
         console.error("Permission error:", err);
         setHasPermission(false);
-      }
+      }*/
     };
     requestMicrophonePermission();
 
     const setupRecognition = async () => {
       console.log("started recognition");
-      try {
+      // onResultSubscription = Speech.addSpeechRecognitionListener(
+      //   "result",
+      //   (result) => {
+      //     console.log("Result:", result);
+      //   }
+      // );
+      /* try {
         onResultSubscription =
           Speech.ExpoSpeechRecognitionModuleEmitter.addListener(
             "onResult",
             (result: { value: string }) => {
               updateTranscript(result.value);
+              console.log(result.value);
               if (result.value?.toLowerCase().includes("hello medicare")) {
                 console.log("Trigger phrase detected!");
                 // Handle your trigger action here
@@ -77,23 +76,23 @@ export default function Profile() {
       } catch (error) {
         console.error("Setup error:", error);
         setHasPermission(false);
-      }
+      }*/
     };
 
     setupRecognition();
     return () => {
-      onResultSubscription?.remove();
+      /* onResultSubscription?.remove();
       onErrorSubscription?.remove();
       try {
         Speech.ExpoSpeechRecognitionModule.stop();
       } catch (err) {
         console.warn;
-      }
+      }*/
     };
   }, [updateTranscript]);
 
   const toggleListening = async () => {
-    if (!hasPermission) {
+    /*if (!hasPermission) {
       Alert.alert(
         "Permission required",
         "Please enable microphone permissions in settings",
@@ -109,7 +108,7 @@ export default function Profile() {
       } else {
         setTranscript("");
         await Speech.ExpoSpeechRecognitionModule.start({
-          language: "de-DE",
+          lang: "de-DE",
           continuous: true,
         });
         setIsListening(true);
@@ -117,7 +116,7 @@ export default function Profile() {
     } catch (error) {
       console.error("Recognition error:", error);
       Alert.alert("Error", "Failed to toggle listening");
-    }
+    }*/
   };
 
   // Render states

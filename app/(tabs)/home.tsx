@@ -36,10 +36,10 @@ export default function Home() {
       >
         <ImageBackground
           style={{
-            backgroundColor: "#143852",
+            backgroundColor: "#FF7700",
             width: width * 0.9,
             aspectRatio: 1,
-            opacity: 0.9,
+            opacity: 0.95,
           }}
           source={require("./../../assets/images/splashbg.png")}
           resizeMode="contain"
@@ -69,7 +69,7 @@ export default function Home() {
             style={{
               padding: 20,
               width: "40%",
-              backgroundColor: "#1ae8aa",
+              backgroundColor: "#FFA733",
               marginTop: 20,
               borderRadius: 3,
               zIndex: 1,
@@ -81,7 +81,7 @@ export default function Home() {
           >
             <FontAwesome6
               name="user-doctor"
-              color={themeTextStyle.color}
+              color={"#FFF"}
               size={themeTextStyle.size}
             />
             <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
@@ -94,7 +94,7 @@ export default function Home() {
               style={{
                 padding: 20,
                 width: "40%",
-                backgroundColor: "#2bdce3",
+                backgroundColor: "#343434",
                 marginTop: 20,
                 borderRadius: 3,
                 zIndex: 1,
@@ -106,7 +106,7 @@ export default function Home() {
             >
               <Feather
                 name="log-out"
-                color={themeTextStyle.color}
+                color={"#FFFFFF"}
                 size={themeTextStyle.size}
               />
               <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
@@ -119,7 +119,7 @@ export default function Home() {
               style={{
                 padding: 20,
                 width: "40%",
-                backgroundColor: "#2bdce3",
+                backgroundColor: "#343434",
                 marginTop: 20,
                 borderRadius: 3,
                 zIndex: 1,
@@ -129,11 +129,7 @@ export default function Home() {
                 alignItems: "center",
               }}
             >
-              <Entypo
-                name="login"
-                color={themeTextStyle.color}
-                size={themeTextStyle.size}
-              />
+              <Entypo name="login" color={"#FFF"} size={themeTextStyle.size} />
               <Text style={[styles.lightStandardText, { marginLeft: 15 }]}>
                 Anmelden
               </Text>
@@ -158,7 +154,7 @@ export default function Home() {
               resizeMode="contain"
               source={Logo}
             ></Image>
-            <Text style={{ fontSize: 18, color: "#89bcc8" }}>
+            <Text style={{ fontSize: 18, color: "#343434" }}>
               Version: 1.0.0
             </Text>
           </View>

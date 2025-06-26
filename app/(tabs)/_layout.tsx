@@ -11,8 +11,8 @@ export default function TabLayout() {
     backgroundColor: colorScheme === "light" ? "#082438" : "#082438",
   };
   const themeTextColors = {
-    active: colorScheme === "light" ? "#71f0d2" : "#71f0d2",
-    inactive: colorScheme === "light" ? "#71c5f0" : "#71c5f0",
+    active: colorScheme === "light" ? "#FFA733" : "#fe6b00",
+    inactive: colorScheme === "light" ? "#fe6b00" : "#FFA733",
   };
   useEffect(() => {}, [isAuthenticated]);
   return (

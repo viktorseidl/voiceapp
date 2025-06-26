@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   lightStandardText: {
     fontSize: 19,
     fontFamily: "Arial",
-    color: "#04121c",
+    color: "#FFFFFF",
   },
   darkStandardText: {
     fontSize: 19,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     color: "#788994",
   },
   lightContainer: {
-    backgroundColor: "#143852", //"#faf6f0",
+    backgroundColor: "#FF7700", //"#143852",
   },
   darkContainer: {
     backgroundColor: "#04121c",
@@ -40,24 +40,24 @@ export const styles = StyleSheet.create({
     color: "#ffffff",
   },
   ThemeSubtitleText: {
-    color: "#2bdce3",
+    color: "#FFF3E0",
   },
   ThemeDescriptionText: {
-    color: "#a6f4de",
+    color: "#F5F5F5",
   },
   ThemeDateTimeText: {
-    color: "#89bcc8",
+    color: "#FFE0B2",
   },
   ThemeUserNameText: {
-    color: "#b8f6f2",
+    color: "#FFF8E1",
   },
   ThemeIconsDocumentation: {
-    color: "#6c88a1",
+    color: "#343434",
   },
   loginParentView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1a496b",
+    backgroundColor: "#FF7700",
   },
 });

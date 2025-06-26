@@ -1,25 +1,71 @@
 import { styles } from "@/constants/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useLogin } from "@/hooks/LoginProvider";
+import { useFetchAuthAll } from "@/hooks/useFetchAll";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useEffect, useMemo, useState } from "react";
 import {
   Appearance,
   Dimensions,
   ImageBackground,
+  Pressable,
   Text,
   View,
 } from "react-native";
-import ValidatedInput from "../ui/ValidatedInput";
 import Feedheader from "./../../assets/images/feedheader.png";
-import FlatLister from "./flatList";
+import Bewohnerrow from "./Bewohnerrow";
 
-export default function Posts() {
+// Define TypeScript interfaces
+interface Bewohner {
+  ID: string;
+  BewohnerNr: string;
+  Anrede: string;
+  Name: string;
+  Vorname: string;
+  Station: string;
+  Znummer: string;
+  Pflegestufe: string;
+  IsBirthdayToday: string;
+  Schwerbehindert: string;
+  inkontinent: string;
+}
+const Posts: React.FC = () => {
+  const { isAuthenticated, wbereiche } = useLogin();
+  console.log(wbereiche);
+  const [bewohner, setBewohner] = useState<Bewohner[]>([]);
+  const [selectedStation, setSelectedStation] = useState<string>("All");
   const { width, height } = Dimensions.get("window");
   const colorScheme = Appearance.getColorScheme();
-  const themeTextStyle =
-    colorScheme === "light"
-      ? { color: "#04121c", size: 24 }
-      : { color: "#788994", size: 24 };
   const themeContainerStyle =
     colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+
+  const filteredBewohner = useMemo(() => {
+    if (selectedStation === "All") return bewohner;
+    return bewohner.filter((b) => b.Station === selectedStation);
+  }, [bewohner, selectedStation]);
+
+  const getAllBewohner = async () => {
+    const network = await SecureStore.getItemAsync("network");
+    if (network) {
+      const check = await useFetchAuthAll(
+        JSON.parse(network).server +
+          "/electronbackend/index.php?path=getAllBewohnerList",
+        "ssdsdsd",
+        "GET",
+        null,
+        null
+      );
+      if (check != false) {
+        setBewohner(check);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAllBewohner();
+  }, []);
   return (
     <View
       style={[
@@ -76,9 +122,9 @@ export default function Posts() {
               gap: 15,
             }}
           >
-            <MaterialIcons name="edit-document" color={"#FFF"} size={34} />
+            <MaterialIcons name="person" color={"#FFF"} size={34} />
             <Text style={{ fontSize: 30, color: "#FFF", fontWeight: 600 }}>
-              Dokumentationen
+              Bewohner
             </Text>
           </View>
           <View
@@ -100,15 +146,53 @@ export default function Posts() {
                 justifyContent: "flex-start",
               }}
             >
-              <ValidatedInput
-                label=""
-                value={""}
-                onChangeText={""}
-                placeholder="Suche nach ..."
-                keyboardType="default"
-                required
-                validator={""}
-              />
+              <View
+                style={{
+                  width: "70%",
+                  marginBottom: 8,
+                  backgroundColor: "#ebeef0",
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                }}
+              >
+                <Picker
+                  selectedValue={selectedStation}
+                  onValueChange={(itemValue) => setSelectedStation(itemValue)}
+                  style={{ width: "90%", color: "#000", fontSize: 18 }}
+                >
+                  <Picker.Item key={"All"} label={"Alle"} value={"All"} />
+                  {wbereiche !== null &&
+                    JSON.parse(wbereiche).length > 0 &&
+                    JSON.parse(wbereiche).map((item, index) => (
+                      <Picker.Item
+                        key={item + index}
+                        label={item.Hausname + " " + item.Station}
+                        value={item.Station}
+                      />
+                    ))}
+                </Picker>
+              </View>
+              <Pressable
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginBottom: 8,
+                  borderRadius: 4,
+                  marginLeft: 30,
+                  backgroundColor: "#343434",
+                  flex: 0,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={() => router.push({ pathname: "/startbewohnercheck" })}
+              >
+                <FontAwesome name="microphone" color={"#FFF"} size={18} />
+              </Pressable>
             </View>
           </View>
         </View>
@@ -123,24 +207,10 @@ export default function Posts() {
             gap: 18,
           }}
         >
-          <FlatLister
-            data={[
-              "Blutdruck",
-              "Blutzucker",
-              "Blutabnahme",
-              "Essverhalten",
-              "Kardio",
-              "Wundkontrolle",
-              "Pulse",
-              "Mobilität",
-              "Schlafverhalten",
-              "Hauptbeobachtung",
-              "Essverhalten",
-              "Temperaturmessung",
-            ]}
-          />
+          <Bewohnerrow filteredBewohner={filteredBewohner} />
         </View>
       </View>
     </View>
   );
-}
+};
+export default Posts;
