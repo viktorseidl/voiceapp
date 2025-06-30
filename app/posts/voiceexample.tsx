@@ -1,6 +1,14 @@
 import { styles } from "@/constants/Colors";
+import * as Speech from "@jamsch/expo-speech-recognition";
 import { useCallback, useEffect, useState } from "react";
-import { Appearance, Button, Text, View } from "react-native";
+import {
+  Appearance,
+  Button,
+  PermissionsAndroid,
+  Platform,
+  Text,
+  View,
+} from "react-native";
 export default function Profile() {
   const colorScheme = Appearance.getColorScheme();
   const themeTextStyle =
@@ -19,7 +27,7 @@ export default function Profile() {
     let onResultSubscription: any;
     let onErrorSubscription: any;
     const requestMicrophonePermission = async () => {
-      /* try {
+      try {
         if (Platform.OS === "android") {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
@@ -39,18 +47,18 @@ export default function Profile() {
       } catch (err) {
         console.error("Permission error:", err);
         setHasPermission(false);
-      }*/
+      }
     };
     requestMicrophonePermission();
 
     const setupRecognition = async () => {
       console.log("started recognition");
-      // onResultSubscription = Speech.addSpeechRecognitionListener(
-      //   "result",
-      //   (result) => {
-      //     console.log("Result:", result);
-      //   }
-      // );
+      onResultSubscription = Speech.addSpeechRecognitionListener(
+        "result",
+        (result) => {
+          console.log(result);
+        }
+      );
       /* try {
         onResultSubscription =
           Speech.ExpoSpeechRecognitionModuleEmitter.addListener(
