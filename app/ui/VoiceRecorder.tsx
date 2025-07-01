@@ -13,15 +13,12 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
   const [transcript, setTranscript] = useState<string>("");
   const transcriptRef = useRef<string>("");
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const updateTranscript = useCallback((text: string) => {
     transcriptRef.current = text;
-
     setTranscript((prev) => (prev !== text ? text : prev));
   }, []);
 
   useEffect(() => {
-    setIsPulsing(true);
     const prepare = async () => {
       const available =
         await Speech.ExpoSpeechRecognitionModule.getStateAsync();
@@ -36,11 +33,10 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
         //console.warn("Microphone permission not granted.");
         return;
       }
-
       setPermissionGranted(true);
     };
     prepare();
-
+    setIsPulsing(true);
     // Add event listeners
     const resultListener = Speech.addSpeechRecognitionListener(
       "result",
@@ -62,7 +58,7 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
       (event) => {
         stopRecognition();
         //console.error("Speech recognition error:", event.error);
-        onComplete(casenum, "Fehler! Aufnahme abgelehnt");
+        onComplete(casenum, "Aufnahme abgelehnt");
         setIsPulsing(false);
         setIsListening(false);
       }
@@ -81,8 +77,10 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
       endListener.remove();
     };
   }, [casenum, show]);
+
   const startRecognition = async () => {
     if (!permissionGranted) return;
+
     try {
       const a = await Speech.ExpoSpeechRecognitionModule.start({
         lang: "de-DE",
@@ -103,6 +101,24 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
       setIsPulsing(false);
     } catch (err) {
       //console.error("Error stopping speech recognition:", err);
+    }
+  };
+  const pauseRecognition = async () => {
+    try {
+      await Speech.ExpoSpeechRecognitionModule.stop();
+    } catch (err) {
+      //console.error("Error stopping speech recognition:", err);
+    }
+  };
+  const resumeRecognition = async () => {
+    try {
+      const a = await Speech.ExpoSpeechRecognitionModule.start({
+        lang: "de-DE",
+        continuous: false,
+        interimResults: true,
+      });
+    } catch (err) {
+      //console.error("Error starting speech recognition:", err);
     }
   };
   return show ? (
