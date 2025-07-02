@@ -1,3 +1,4 @@
+import { extractNamesFromText } from "@/hooks/checkBewohnerMatch";
 import { useLogin } from "@/hooks/LoginProvider";
 import { useBewohnerMatcher } from "@/hooks/useBewohner";
 import { useDokumentationenMatcher } from "@/hooks/useDokumentationen";
@@ -108,15 +109,16 @@ function filterBewohnerByName(
     return parts.every((part) => name.includes(part) || vorname.includes(part));
   });
 }
+interface Leistung {
+  LeistungsID: string;
+  Leistungsbezeichnung: string;
+  LeistungsNummer: string;
+  LeistungsTitel: string;
+}
 const StartBewohnerCheck: React.FC = () => {
+  const [leistungArray, setLeistungArray] = useState<Leistung[]>([]);
   const [bewohner, setBewohner] = useState<Bewohner[]>([]);
-  const [docuList, setDocuList] = useState<Docus[]>([
-    { bezeichnung: "Blutzucker" },
-    { bezeichnung: "Blutdruck" },
-    { bezeichnung: "Mobilitätsfaktor" },
-    { bezeichnung: "Temperatur" },
-    { bezeichnung: "DekubitusProphylaxe" },
-  ]);
+  const [docuList, setDocuList] = useState<Leistung[]>([]);
   const [bewohnerResult, setBewohnerResult] = useState<Bewohner[]>([]);
   const [bewohnerListShow, setBewohnerListShow] = useState<boolean>(false);
   const [caseNumber, setcaseNumber] = useState<number>(0);
@@ -139,7 +141,7 @@ const StartBewohnerCheck: React.FC = () => {
         setSpeakShow(true);
         return;
       case 1: //BEWOHNER ABFRAGE (GEBE NACHNAME UND VORNAME DES BEWOHNER AN)
-        setcaseNumber(2);
+        setcaseNumber(13); //setcaseNumber(2);
         setSpeakShow(false);
         setSpeakText("");
         setVoiceShow(true);
@@ -269,7 +271,7 @@ const StartBewohnerCheck: React.FC = () => {
       case 7: //AUSGABE WENN MEHRERE BEWOHNER EXISTIEREN
         router.back();
         return;
-      case 8: //EXACTER BEWOHNER GEFUNDEN BEENDE
+      case 8: //EXACTER BEWOHNER GEFUNDEN BEENDE DOKUMENTATION UND LEITE AN FORM WEITER
         console.log("ende case start dokumentation final");
         return;
       case 9: //AUSGABE WENN KEIN BEWOHNER VORHANDEN
@@ -309,12 +311,13 @@ const StartBewohnerCheck: React.FC = () => {
         }
         return;
       case 11: //BEWOHNERAUSWAHL NEU STARTEN ODER ZURÜCK ZUR BEWOHNERLISTE
-        setcaseNumber(12);
         setSpeakShow(false);
+        setcaseNumber(12);
         setSpeakText("");
         setVoiceShow(true);
         return;
       case 12: //LISTEN FOR DOKUMENTATION
+        console.log(txt);
         setVoiceShow(false);
         if (
           typeof txt == "string" &&
@@ -333,31 +336,52 @@ const StartBewohnerCheck: React.FC = () => {
           setSpeakShow(true);
         } else {
           const matchd = matchDoku(txt);
-          matchd !== null && typeof matchd !== "string"
-            ? setSpeakCase(8)
-            : setSpeakCase(11);
-          matchd !== null && typeof matchd !== "string"
-            ? setDocuName(
-                matchd !== null && typeof matchd !== "string"
-                  ? matchd?.bezeichnung
-                  : null
-              )
-            : SkriptSteps(11, "");
-          setSpeakText(
-            "Die Dokumentation '" +
-              (matchd !== null && typeof matchd !== "string"
-                ? matchd?.bezeichnung
-                : "keine ausgewählt") +
-              "' wurde ausgewählt! Einen Moment bitte, ...".toString()
-          );
-          setSpeakShow(true);
+          console.log(JSON.stringify(matchd));
+          if (matchd !== null && typeof matchd !== "string") {
+            setSpeakCase(8);
+            setDocuName(matchd?.LeistungsTitel);
+            setSpeakText(
+              "Die Dokumentation '" +
+                matchd?.LeistungsTitel +
+                "' wurde ausgewählt! Einen Moment bitte, ...".toString()
+            );
+            setSpeakShow(true);
+          } else {
+            setSpeakCase(11);
+            setSpeakText("Leider habe ich Ihre Antwort nicht verstanden.");
+            setSpeakShow(true);
+            SkriptSteps(11, "");
+          }
         }
+
         return;
       case 13: //MATCH DOKUMENTATION AND REDIRECT
+        let names = extractNamesFromText(txt);
+        console.log(JSON.stringify(names));
+        const match = matchBewohner(names[0]);
+        console.log(JSON.stringify(match));
+        //const matchd = matchedPersons(names[0]); //check bewohner first
+        //console.log(matchd);
         return;
     }
   };
-
+  const getAllLeistungen = async () => {
+    const network = await SecureStore.getItemAsync("network");
+    if (network) {
+      const check = await useFetchAuthAll(
+        JSON.parse(network).server +
+          "/electronbackend/index.php?path=getFullLeistungskatalog",
+        "ssdsdsd",
+        "GET",
+        null,
+        null
+      );
+      console.log(check);
+      if (check != false) {
+        setDocuList(check);
+      }
+    }
+  };
   const getAllBewohner = async () => {
     const network = await SecureStore.getItemAsync("network");
     if (network) {
@@ -372,6 +396,7 @@ const StartBewohnerCheck: React.FC = () => {
       console.log(check);
       if (check != false) {
         setBewohner(check);
+        getAllLeistungen();
       }
     }
   };

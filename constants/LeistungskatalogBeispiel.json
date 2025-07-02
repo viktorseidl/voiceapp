@@ -1,0 +1,72 @@
+{
+  "Vitalparameter": [
+    "Blutdruckmessung",
+    "Pulsfrequenz",
+    "Blutzuckermessung",
+    "Temperaturmessung",
+    "Atmungsfrequenz",
+    "Sauerstoffsättigung (SpO2)",
+    "Schmerzskala (NRS, VAS)"
+  ],
+  "Pflegeleistungen": [
+    "Grundpflege (Körperpflege, Duschen, Baden)",
+    "Mobilisation",
+    "Lagerung",
+    "Dekubitusprophylaxe",
+    "Ausscheidung (Urin, Stuhl dokumentieren)",
+    "Hautbeobachtung und -pflege",
+    "Verbandswechsel",
+    "Wundversorgung",
+    "Ernährungsdokumentation (Essensaufnahme, Flüssigkeitsbilanz)",
+    "Sturzprophylaxe",
+    "Pflegeplanung und -evaluation"
+  ],
+  "Medizinische Leistungen": [
+    "Medikamentengabe",
+    "Injektionen (s.c., i.m.)",
+    "Infusionstherapie",
+    "Katheterisierung",
+    "Drainagenmanagement",
+    "Inhalationstherapie",
+    "EKG",
+    "Laboranforderung",
+    "Blutabnahme",
+    "Zugangsanlage (peripher, zentral)"
+  ],
+  "Dokumentationspflichtige Assessments": [
+    "Pflegegrad-Einstufung",
+    "Braden-Skala (Dekubitusrisiko)",
+    "GCS (Glasgow Coma Scale)",
+    "MNA (Mini Nutritional Assessment)",
+    "Barthel-Index",
+    "Demenz-Screening (z. B. MMST)",
+    "Delir-Screening (z. B. Nu-DESC)",
+    "Schmerzassessment",
+    "Sturzrisiko-Assessment",
+    "Pflegebedarf nach PPR 2.0"
+  ],
+  "Therapeutische Leistungen": [
+    "Physiotherapie",
+    "Ergotherapie",
+    "Logopädie",
+    "Atemtherapie",
+    "Wärme- oder Kälteanwendungen",
+    "Anleitung zur Selbsthilfe",
+    "Patientenschulung"
+  ],
+  "Kommunikative Leistungen": [
+    "Angehörigengespräch",
+    "Arztvisite (Teilnahme, Vorbereitung, Dokumentation)",
+    "Pflegevisite",
+    "Beratungsgespräch",
+    "Entlassungsgespräch"
+  ],
+  "Technische Leistungen / Monitoring": [
+    "Langzeitblutdruckmessung",
+    "Langzeit-EKG",
+    "Monitoring (z. B. Intensivstation)",
+    "Beatmung (nicht-invasiv/invasiv)",
+    "Blutzuckerverlaufskontrolle (CGM)",
+    "Urinanalyse (Teststreifen, Status)"
+  ]
+}

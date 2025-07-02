@@ -1,25 +1,28 @@
 import Fuse from "fuse.js";
 import { useMemo } from "react";
 
-export interface Docus {
-  bezeichnung: string;
+interface Leistung {
+  LeistungsID: string;
+  Leistungsbezeichnung: string;
+  LeistungsNummer: string;
+  LeistungsTitel: string;
 }
 
-export function useDokumentationenMatcher(docuList: Docus[]) {
+export function useDokumentationenMatcher(docuList: Leistung[]) {
   const fuse = useMemo(() => {
     return new Fuse(docuList, {
       threshold: 0.4,
       keys: [
-        "bezeichnung",
+        "LeistungsTitel",
         {
           name: "fullName",
-          getFn: (b: Docus) => `${b.bezeichnung}`,
+          getFn: (b: Leistung) => `${b.LeistungsTitel}`,
         },
       ],
     });
   }, [docuList]);
 
-  function matchDoku(input: string): Docus | null | string {
+  function matchDoku(input: string): Leistung | null | string {
     if (
       !input ||
       input.length < 2 ||
@@ -29,7 +32,7 @@ export function useDokumentationenMatcher(docuList: Docus[]) {
     )
       return "beenden";
     const result = fuse.search(input);
-    return result.length > 0 ? result[0].item : null;
+    return result.length > 0 ? result[0].item : "beenden";
   }
 
   return { matchDoku };

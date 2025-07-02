@@ -1,5 +1,8 @@
 import { styles } from "@/constants/Colors";
+import { useFetchAuthAll } from "@/hooks/useFetchAll";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as SecureStore from "expo-secure-store";
+import { useEffect, useState } from "react";
 import {
   Appearance,
   Dimensions,
@@ -11,7 +14,15 @@ import ValidatedInput from "../ui/ValidatedInput";
 import Feedheader from "./../../assets/images/feedheader.png";
 import FlatLister from "./flatList";
 
+interface Leistung {
+  LeistungsID: string;
+  Leistungsbezeichnung: string;
+  LeistungsNummer: string;
+  LeistungsTitel: string;
+}
+
 export default function CardsView() {
+  const [leistungArray, setLeistungArray] = useState<Leistung[]>([]);
   const { width, height } = Dimensions.get("window");
   const colorScheme = Appearance.getColorScheme();
   const themeTextStyle =
@@ -20,6 +31,27 @@ export default function CardsView() {
       : { color: "#788994", size: 24 };
   const themeContainerStyle =
     colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+
+  const getAllLeistungen = async () => {
+    const network = await SecureStore.getItemAsync("network");
+    if (network) {
+      const check = await useFetchAuthAll(
+        JSON.parse(network).server +
+          "/electronbackend/index.php?path=getFullLeistungskatalog",
+        "ssdsdsd",
+        "GET",
+        null,
+        null
+      );
+      console.log(check);
+      if (check != false) {
+        setLeistungArray(check);
+      }
+    }
+  };
+  useEffect(() => {
+    getAllLeistungen();
+  }, []);
   return (
     <View
       style={[
@@ -123,22 +155,7 @@ export default function CardsView() {
             gap: 18,
           }}
         >
-          <FlatLister
-            data={[
-              "Blutdruck",
-              "Blutzucker",
-              "Blutabnahme",
-              "Essverhalten",
-              "Kardio",
-              "Wundkontrolle",
-              "Pulse",
-              "Mobilität",
-              "Schlafverhalten",
-              "Hauptbeobachtung",
-              "Essverhalten",
-              "Temperaturmessung",
-            ]}
-          />
+          <FlatLister data={leistungArray} />
         </View>
       </View>
     </View>
