@@ -16,6 +16,28 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "manifest": {
+        "application": {
+          "usesNativeLibrary": [
+            {
+              "name": "libOpenCL.so",
+              "required": false
+            },
+            {
+              "name": "libOpenCL-pixel.so",
+              "required": false
+            },
+            {
+              "name": "libGLES_mali.so",
+              "required": false
+            },
+            {
+              "name": "libPVROCL.so",
+              "required": false
+            }
+          ]
+        }
+      },
       "edgeToEdgeEnabled": true,
       "package": "com.dataschafhausen.blutdrucktest",
       "permissions": ["RECORD_AUDIO"]
@@ -34,6 +56,12 @@
           "imageWidth": 400,
           "resizeMode": "contain",
           "backgroundColor": "#1d4765"
+        }
+      ],
+      [
+        "react-native-fast-tflite",
+        {
+          "enableAndroidGpuLibraries": true
         }
       ],
       [

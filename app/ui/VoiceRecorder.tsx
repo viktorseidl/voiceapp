@@ -44,6 +44,7 @@ const VoiceRecorder: React.FC<Params> = ({ show, onComplete, casenum }) => {
         const transcript = event.results?.[0]?.transcript ?? "";
         console.log("AUF1: " + JSON.stringify(transcript));
         console.log("AUF1: " + JSON.stringify(event));
+        console.log("AUF1: " + casenum);
 
         if (event.isFinal) {
           updateTranscript(transcript);

@@ -141,7 +141,7 @@ const StartBewohnerCheck: React.FC = () => {
         setSpeakShow(true);
         return;
       case 1: //BEWOHNER ABFRAGE (GEBE NACHNAME UND VORNAME DES BEWOHNER AN)
-        setcaseNumber(13); //setcaseNumber(2);
+        setcaseNumber(2);
         setSpeakShow(false);
         setSpeakText("");
         setVoiceShow(true);
